@@ -1,17 +1,13 @@
 
-'''
-
-Scrapes the book ID of a book from Gutenberg
-
-'''
-
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
-def main():
-    #Start here
-    #URL here
-    url = "http://www.gutenberg.org/ebooks/search/?query=pride+and+prejudice"
+def getFirstBookID(url: str) -> int:
+    ''' 
+    Given gutenberg url in the form 
+    "http://www.gutenberg.org/ebooks/search/?query=pride+and+prejudice"
+    the function returns the first book's ID as an integer.
+    '''
     page = urlopen(url)
     soup = BeautifulSoup(page, 'html.parser')
     firstBook = soup.find('a', attrs={'accesskey':'3'});
@@ -20,9 +16,7 @@ def main():
     # remove '/ebooks/' part
     bookID = firstBookHref[8:]
     bookID = int(bookID)
-    print(bookID)
+    return bookID
 
 
 
-if __name__ == "__main__":
-    main()
