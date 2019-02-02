@@ -54,9 +54,23 @@ def get_isbn_10(title: str) -> int:
     request = urlopen(apiURL)
     contents = request.read()
     # type of contents should be bytes
-    # now parse into JSON
+    # now parse from JSON into python dict
     parsed = json.loads(contents)
 
     # Find ISBN, should be under
     # industryIdentifiers
-    pprint(parsed)
+    list_of_entries = parsed['items']
+    isbn10 = -1
+    for entry in list_of_entries:
+        identifiers_list = entry['volumeInfo']['industryIdentifiers']
+        # if identifiers_list empty, then no isbn10, go to next entry
+        if len(identifiers_list) != 0:
+            # Note entry may still not has ISBN10
+            index = 0
+            while isbn10 == -1 and index < len(identifiers_list):
+                id = identifiers_list[index]
+                if id['type'] == 'ISBN_10':
+                    isbn10 = int(id['identifier'])
+                index+=1
+
+    return isbn10
