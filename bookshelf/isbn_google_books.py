@@ -5,6 +5,8 @@ Books API and get the ISBN-10 of the first search result
 that has an ISBN-10. If no ISBN-10 is found,
 -1 is returned.
 
+Note: Need to check http response 200 OK
+
 Parameters:
 Book title is assumed to be space delimited.
 
@@ -27,3 +29,34 @@ with an ISBN is found or we reach the end of
 the available entries. If no ISBN-10 is found,
 then -1 is returned.
 '''
+
+from urllib.request import urlopen
+import json
+from pprint import pprint
+
+def get_isbn_10(title: str) -> int:
+    # Hard code title for now.
+    # Note: var shadowing
+    title = 'Pride and Prejudice'
+
+    titleSplit = title.split(' ')
+    formattedTitle = ''
+    for i in range(len(titleSplit)):
+        formattedTitle = formattedTitle + titleSplit[i]
+        if i < (len(titleSplit) - 1):
+            formattedTitle = formattedTitle + '+'
+    # Now, formattedTitle is same as title, but
+    # delimited with + instead of spaces
+    baseURL = r'https://www.googleapis.com/books/v1/volumes?q='
+    apiKey = 'AIzaSyCIuNkPSTasaBxa2Bx2qivCLWwwlZC1B70'
+    apiURL = baseURL + formattedTitle + '&key=' + apiKey
+    
+    request = urlopen(apiURL)
+    contents = request.read()
+    # type of contents should be bytes
+    # now parse into JSON
+    parsed = json.loads(contents)
+
+    # Find ISBN, should be under
+    # industryIdentifiers
+    pprint(parsed)
