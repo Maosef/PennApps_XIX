@@ -1,9 +1,25 @@
 
 import io
+from google.cloud import vision
 
 def detect_text(path):
     """Detects text in the file."""
-    from google.cloud import vision
+    "returns: iterable of text objects, with description and vertices."
+
+    client = vision.ImageAnnotatorClient()
+
+    with io.open(path, 'rb') as image_file:
+        content = image_file.read()
+
+    image = vision.types.Image(content=content)
+
+    response = client.text_detection(image=image)
+    texts = response.text_annotations
+    
+    return texts
+
+def demo(path):
+    """Detects text in the file."""
     client = vision.ImageAnnotatorClient()
 
     with io.open(path, 'rb') as image_file:
@@ -23,4 +39,5 @@ def detect_text(path):
 
         print('bounds: {}'.format(','.join(vertices)))
 
-detect_text("books_rotated.jpg")
+if __name__ == '__main__':
+    demo("books_rotated.jpg")
