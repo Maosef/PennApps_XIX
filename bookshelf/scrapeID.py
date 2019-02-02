@@ -31,6 +31,13 @@ def getFirstBookID(url: str) -> int:
     bookID = int(bookID)
     return bookID
 
+def get_id(title):
+    
+    url = format_url(title)
+    #print(url)
+    return getFirstBookID(url)
+    	
+
 if __name__ == '__main__':
     title = "pride and prejudice"
     url = format_url(title)
