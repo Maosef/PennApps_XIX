@@ -2,6 +2,17 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
+def format_url(title):
+
+    '''
+    formats a book title into a gutenberg http request
+    '''
+    words = title.split(" ")
+    query = "+".join(words)
+    print(query)
+
+    return "http://www.gutenberg.org/ebooks/search/?query=" + query 
+
 def getFirstBookID(url: str) -> int:
     ''' 
     Given gutenberg url in the form 
@@ -17,6 +28,12 @@ def getFirstBookID(url: str) -> int:
     bookID = firstBookHref[8:]
     bookID = int(bookID)
     return bookID
+
+if __name__ == '__main__':
+    title = "pride and prejudice"
+    url = format_url(title)
+    print(url)
+    print(getFirstBookID(url))
 
 
 
