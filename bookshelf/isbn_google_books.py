@@ -32,12 +32,8 @@ then -1 is returned.
 
 from urllib.request import urlopen
 import json
-from pprint import pprint
 
 def get_isbn_10(title: str) -> int:
-    # Hard code title for now.
-    # Note: var shadowing
-    title = 'Pride and Prejudice'
 
     titleSplit = title.split(' ')
     formattedTitle = ''
@@ -52,6 +48,8 @@ def get_isbn_10(title: str) -> int:
     apiURL = baseURL + formattedTitle + '&key=' + apiKey
     
     request = urlopen(apiURL)
+    if request.getcode() != 200:
+        raise RuntimeError('HTTP GET Request Code NOT 200')
     contents = request.read()
     # type of contents should be bytes
     # now parse from JSON into python dict
@@ -65,7 +63,7 @@ def get_isbn_10(title: str) -> int:
         identifiers_list = entry['volumeInfo']['industryIdentifiers']
         # if identifiers_list empty, then no isbn10, go to next entry
         if len(identifiers_list) != 0:
-            # Note entry may still not has ISBN10
+            # Note entry may not have ISBN10
             index = 0
             while isbn10 == -1 and index < len(identifiers_list):
                 id = identifiers_list[index]
