@@ -21,17 +21,7 @@ def get_related(url: str) -> int:
         if title != None:
             title_list.append(title.get_text())
     
-    print(title_list)
-
-    #print(book_list[:4])
-    #firstBook = soup.find('a', attrs={'accesskey':'3'});
-    #firstBookHref = firstBook['href']
-    # firstBookHref is a string '/ebooks/XXXX'
-    # remove '/ebooks/' part
-    #bookID = firstBookHref[8:]
-    #bookID = int(bookID)
-    #return bookID
-
+    return title_list
 
 if __name__ == '__main__':
 
