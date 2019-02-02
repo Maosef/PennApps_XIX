@@ -18,6 +18,8 @@ def getFirstBookID(url: str) -> int:
     Given gutenberg url in the form 
     "http://www.gutenberg.org/ebooks/search/?query=pride+and+prejudice"
     the function returns the first book's ID as an integer.
+
+    Note: need to check http request code to verify it is 200(OK)
     '''
     page = urlopen(url)
     soup = BeautifulSoup(page, 'html.parser')
