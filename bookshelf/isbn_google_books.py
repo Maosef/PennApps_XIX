@@ -1,9 +1,9 @@
 
 '''
 Given a book title, make a REST API call to the Google
-Books API and get the ISBN-10 of the first search result
+Books API and get the ISBN-10 as a string of the first search result
 that has an ISBN-10. If no ISBN-10 is found,
--1 is returned.
+empty string is returned.
 
 Note: Need to check http response 200 OK
 
@@ -27,13 +27,13 @@ the first entry with an ISBN-10.
 We continue iterating until an entry
 with an ISBN is found or we reach the end of 
 the available entries. If no ISBN-10 is found,
-then -1 is returned.
+then empty string is returned.
 '''
 
 from urllib.request import urlopen
 import json
 
-def get_isbn_10(title: str) -> int:
+def get_isbn_10(title: str) -> str:
 
     titleSplit = title.split(' ')
     formattedTitle = ''
@@ -58,17 +58,17 @@ def get_isbn_10(title: str) -> int:
     # Find ISBN, should be under
     # industryIdentifiers
     list_of_entries = parsed['items']
-    isbn10 = -1
+    isbn10 = ''
     for entry in list_of_entries:
         identifiers_list = entry['volumeInfo']['industryIdentifiers']
         # if identifiers_list empty, then no isbn10, go to next entry
         if len(identifiers_list) != 0:
             # Note entry may not have ISBN10
             index = 0
-            while isbn10 == -1 and index < len(identifiers_list):
+            while isbn10 == '' and index < len(identifiers_list):
                 id = identifiers_list[index]
                 if id['type'] == 'ISBN_10':
-                    isbn10 = int(id['identifier'])
+                    isbn10 = id['identifier']
                 index+=1
 
     return isbn10
