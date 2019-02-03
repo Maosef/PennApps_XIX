@@ -14,14 +14,14 @@ texts = texts.split('\n')
 #filter bad titles
 #get ISBN number and book contents
 for title in texts:
-    print(title)
+    #print(title)
     if not all(ord(c) < 128 for c in title): continue
 
     isbn = get_isbn_10(title)
     print(title, isbn)
-    #rec_list = get_related(isbn)
-    
-    #for rec in rec_list:
-    #    print(rec)
+    rec_list = get_related(isbn)
+    if rec_list == None: continue    
+    for rec in rec_list:
+        print(rec)
 
 

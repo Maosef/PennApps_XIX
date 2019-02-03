@@ -16,11 +16,14 @@ def get_related(isbn: str) -> list:
     page = urlopen(req).read()
     soup = BeautifulSoup(page, 'html.parser')
     
-    book_list = soup.find('ul', class_="booklist").find_all('li')
+    book_list = soup.find('ul', class_="booklist")
+    if book_list is None: return
+
+    book_list = book_list.find_all('li')
     title_list = []
     for book in book_list:
         title = book.find('li', class_="recommendation-logged-out")
-        print(title)
+        #print(title)
         if title != None:
             title_list.append(title.get_text())
     
