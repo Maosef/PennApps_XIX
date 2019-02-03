@@ -28,13 +28,19 @@ We continue iterating until an entry
 with an ISBN is found or we reach the end of 
 the available entries. If no ISBN-10 is found,
 then empty string is returned.
-'''
 
+Return:
+Empty string if no ISBN
+'-1' if HTTPError
+else return ISBN
+'''
+import urllib.error
 from urllib.request import urlopen
 import json
 
 def get_isbn_10(title: str) -> str:
 
+    isbn10 = ''
     titleSplit = title.split(' ')
     formattedTitle = ''
     for i in range(len(titleSplit)):
@@ -46,34 +52,33 @@ def get_isbn_10(title: str) -> str:
     baseURL = r'https://www.googleapis.com/books/v1/volumes?q='
     apiKey = 'AIzaSyCIuNkPSTasaBxa2Bx2qivCLWwwlZC1B70'
     apiURL = baseURL + formattedTitle + '&key=' + apiKey
-    
-    request = urlopen(apiURL)
-    if request.getcode() != 200:
-        raise RuntimeError('HTTP GET Request Code NOT 200')
-    contents = request.read()
-    # type of contents should be bytes
-    # now parse from JSON into python dict
-    parsed = json.loads(contents)
+    try:
+        request = urlopen(apiURL)
+        contents = request.read()
+        # type of contents should be bytes
+        # now parse from JSON into python dict
+        parsed = json.loads(contents)
 
-    # Find ISBN, should be under
-    # industryIdentifiers
-    list_of_entries = parsed['items']
-    isbn10 = ''
-    for entry in list_of_entries:
-        has_industryIdentifiers = True
-        volDict = entry['volumeInfo']
-        if 'industryIdentifiers' not in list(volDict.keys()):
-            has_industryIdentifiers = False
-        if has_industryIdentifiers == True:
-            identifiers_list = entry['volumeInfo']['industryIdentifiers']
-            # if identifiers_list empty, then no isbn10, go to next entry
-            if len(identifiers_list) != 0:
-                # Note entry may not have ISBN10
-                index = 0
-                while isbn10 == '' and index < len(identifiers_list):
-                    id = identifiers_list[index]
-                    if id['type'] == 'ISBN_10':
-                        isbn10 = id['identifier']
-                    index+=1
+        # Find ISBN, should be under
+        # industryIdentifiers
+        list_of_entries = parsed['items']
+        for entry in list_of_entries:
+            has_industryIdentifiers = True
+            volDict = entry['volumeInfo']
+            if 'industryIdentifiers' not in list(volDict.keys()):
+                has_industryIdentifiers = False
+            if has_industryIdentifiers == True:
+                identifiers_list = entry['volumeInfo']['industryIdentifiers']
+                # if identifiers_list empty, then no isbn10, go to next entry
+                if len(identifiers_list) != 0:
+                    # Note entry may not have ISBN10
+                    index = 0
+                    while isbn10 == '' and index < len(identifiers_list):
+                        id = identifiers_list[index]
+                        if id['type'] == 'ISBN_10':
+                            isbn10 = id['identifier']
+                        index+=1
+    except urllib.error.HTTPError:
+        return '-1'
 
     return isbn10
