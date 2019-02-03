@@ -4,7 +4,7 @@ Creators: Andrew Mao and Eric Li
 
 Goal:
 
-Take an image of a bookshelf, process the books
+Take an image of a bookshelf, process the books, 
 and recommend new books.
 
 
