@@ -2,13 +2,16 @@
 from bs4 import BeautifulSoup
 from urllib.request import Request, urlopen
 
-def get_related(url: str) -> int:
+def get_related(isbn: str) -> list:
     '''
-    Given formatted url,
-    the function returns a list of related titles..
+    Given ISBN number,
+    the function returns a list of related titles (if they exist).
 
     Note: need to check http request code to verify it is 200(OK)
     '''
+
+    url = "https://whatshouldireadnext.com/isbn/" + isbn
+
     req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
     page = urlopen(req).read()
     soup = BeautifulSoup(page, 'html.parser')
@@ -24,7 +27,8 @@ def get_related(url: str) -> int:
     return title_list
 
 if __name__ == '__main__':
+    
+    isbn = "9781904633013"
+    #path = "https://whatshouldireadnext.com/isbn/9781904633013"
 
-    path = "https://whatshouldireadnext.com/isbn/9781904633013"
-
-    print(get_related(path))
+    print(get_related(isbn))
