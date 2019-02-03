@@ -7,8 +7,6 @@ Returns 0 if not found
 import xml.etree.ElementTree as ET
 import requests
 
-
-
 def get_goodreads_id(title: str) -> int:
     id = 0
 
