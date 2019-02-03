@@ -60,15 +60,20 @@ def get_isbn_10(title: str) -> str:
     list_of_entries = parsed['items']
     isbn10 = ''
     for entry in list_of_entries:
-        identifiers_list = entry['volumeInfo']['industryIdentifiers']
-        # if identifiers_list empty, then no isbn10, go to next entry
-        if len(identifiers_list) != 0:
-            # Note entry may not have ISBN10
-            index = 0
-            while isbn10 == '' and index < len(identifiers_list):
-                id = identifiers_list[index]
-                if id['type'] == 'ISBN_10':
-                    isbn10 = id['identifier']
-                index+=1
+        has_industryIdentifiers = True
+        volDict = entry['volumeInfo']
+        if 'industryIdentifiers' not in list(volDict.keys()):
+            has_industryIdentifiers = False
+        if has_industryIdentifiers == True:
+            identifiers_list = entry['volumeInfo']['industryIdentifiers']
+            # if identifiers_list empty, then no isbn10, go to next entry
+            if len(identifiers_list) != 0:
+                # Note entry may not have ISBN10
+                index = 0
+                while isbn10 == '' and index < len(identifiers_list):
+                    id = identifiers_list[index]
+                    if id['type'] == 'ISBN_10':
+                        isbn10 = id['identifier']
+                    index+=1
 
     return isbn10
