@@ -19,6 +19,7 @@ for title in texts:
     rec_list = get_recs(str(work_id))
     if rec_list == -1 or rec_list == None: continue    
     for rec in rec_list:
+        if rec == 'Error': continue
         print(rec)
 
 
