@@ -27,6 +27,9 @@ def get_goodreads_id(title: str) -> int:
         
     except:
         # Handle error
+        # pass will skip getting the id
+        # main.py will continue to the next book
+        # to process
         pass
     
     return id
