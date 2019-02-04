@@ -50,7 +50,7 @@ def get_isbn_10(title: str) -> str:
     # Now, formattedTitle is same as title, but
     # delimited with + instead of spaces
     baseURL = r'https://www.googleapis.com/books/v1/volumes?q='
-    apiKey = 'AIzaSyCIuNkPSTasaBxa2Bx2qivCLWwwlZC1B70'
+    apiKey = 'YOURGOOGLEAPIKEYHERE'
     apiURL = baseURL + formattedTitle + '&key=' + apiKey
     try:
         request = urlopen(apiURL)

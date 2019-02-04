@@ -10,7 +10,7 @@ import requests
 def get_goodreads_id(title: str) -> int:
     id = 0
 
-    baseURL = r'https://www.goodreads.com/search.xml?key=vfjQv3RyzRKtbRfFjX7Q&q='
+    baseURL = r'https://www.goodreads.com/search.xml?key=GOODREADSAPIKEY&q='
     titleSplit = title.split(' ')
     formattedTitle = '+'.join(titleSplit)
     url = baseURL + formattedTitle
