@@ -1,4 +1,4 @@
-# PennApps_XIX
+# PennApps_XIX: Booksmart
 
 Creators: Andrew Mao and Eric Li
 
